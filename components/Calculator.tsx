@@ -1,0 +1,117 @@
+"use client"
+
+import { useState } from "react"
+import { Calendar, Delete, Plus } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+
+export default function Calculator() {
+  const [amount, setAmount] = useState("0.00")
+  const [isTyping, setIsTyping] = useState(false)
+
+  const handlePress = (key: string) => {
+    if (key === "DEL") {
+      if (
+        amount.length === 1 ||
+        (amount.length === 4 && amount.endsWith(".00") && !isTyping)
+      ) {
+        setAmount("0.00")
+        setIsTyping(false)
+      } else {
+        setAmount((prev) => {
+          const next = prev.slice(0, -1)
+          return next.length === 0 ? "0" : next
+        })
+      }
+      return
+    }
+
+    if (key === ".") {
+      if (amount.includes(".")) return
+      setAmount((prev) => prev + ".")
+      setIsTyping(true)
+      return
+    }
+
+    if (!isTyping) {
+      setAmount(key)
+      setIsTyping(true)
+    } else {
+      // Limit decimal places to 2 if dot exists
+      if (amount.includes(".")) {
+        const [, decimal] = amount.split(".")
+        if (decimal && decimal.length >= 2) return
+      }
+      setAmount((prev) => prev + key)
+    }
+  }
+
+  const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "DEL"]
+
+  return (
+    <div className='w-full  mx-auto p-4 rounded-xl bg-card border shadow-sm'>
+      {/* Header */}
+      <div className='flex items-center justify-between mb-6'>
+        <span className='text-xs font-medium text-muted-foreground tracking-wider'>
+          SZYBKIE DODAWANIE
+        </span>
+        <Button
+          variant='outline'
+          size='sm'
+          className='h-8 gap-2 text-xs font-normal'
+        >
+          <Calendar className='h-3.5 w-3.5' />
+          <span>Dzisiaj</span>
+        </Button>
+      </div>
+
+      {/* Display */}
+      <div className='flex items-baseline justify-center mb-8 gap-1'>
+        <span className='text-2xl text-muted-foreground font-light mr-2'>PLN</span>
+        <span
+          className={cn(
+            "text-5xl font-bold tracking-tight text-foreground transition-all",
+            isTyping ? "scale-105" : "scale-100",
+          )}
+        >
+          {amount}
+        </span>
+        <span className='w-0.5 h-10 bg-primary/50 animate-pulse ml-1 rounded-full' />
+      </div>
+
+      <div className='h-px w-full bg-border mb-6' />
+
+      {/* Keypad */}
+      <div className='grid grid-cols-3 gap-3 mb-6'>
+        {keys.map((key) => (
+          <Button
+            key={key}
+            variant='secondary'
+            className={cn(
+              "h-14 text-xl font-medium transition-all active:scale-95",
+              key === "DEL" &&
+                "bg-destructive/10 text-destructive hover:bg-destructive/20 hover:text-destructive",
+            )}
+            onClick={() => handlePress(key)}
+          >
+            {key === "DEL" ? <Delete className='h-6 w-6' /> : key}
+          </Button>
+        ))}
+      </div>
+
+      {/* Submit Button */}
+      <Button
+        className='w-full h-14 text-lg font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all active:scale-[0.98]'
+        size='lg'
+        onClick={() => {
+          alert(`Zapisano: ${amount}`)
+          setAmount("0.00")
+          setIsTyping(false)
+        }}
+      >
+        <Plus className='mr-2 h-5 w-5 stroke-3' />
+        ZAPISZ PŁATNOŚĆ
+      </Button>
+    </div>
+  )
+}
