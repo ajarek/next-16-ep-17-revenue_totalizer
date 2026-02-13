@@ -5,13 +5,15 @@ import { Calendar, Delete, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import DatePicker from "./DatePicker"
-import { useRecordsStore } from "@/store/cartStore"
+import { useRecordsStore } from "@/store/recordsStore"
+import {useCurrentUserStore} from "@/store/currentUserStore"
 
 export default function Calculator() {
   const [amount, setAmount] = useState("0.00")
   const [isTyping, setIsTyping] = useState(false)
   const [date, setDate] = useState<Date | undefined>(new Date())
   const { addItemToRecords } = useRecordsStore()
+  const {currentUser} = useCurrentUserStore()
 
   const handlePress = (key: string) => {
     if (key === "DEL") {
@@ -108,6 +110,7 @@ export default function Calculator() {
             id: Date.now(),
             amount: parseFloat(amount),
             date: date || new Date(),
+            user_name: currentUser?.name || "nieznany",
           })
           setAmount("0.00")
           setIsTyping(false)
