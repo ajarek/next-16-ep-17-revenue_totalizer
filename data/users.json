@@ -1,5 +1,11 @@
 [
     {
+        "id": 0,
+        "name": "User",
+        "password": "",
+        "image": "/user.png"
+    },
+    {
         "id": 1,
         "name": "Jarek",
         "password": "2101",
@@ -10,5 +16,6 @@
         "name": "Ania",
         "password": "0503",
         "image": "/woman.jpg"
-    }
+    }   
+    
 ]

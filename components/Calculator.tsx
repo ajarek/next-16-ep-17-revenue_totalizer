@@ -4,10 +4,14 @@ import { useState } from "react"
 import { Calendar, Delete, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import DatePicker from "./DatePicker"
+import { useRecordsStore } from "@/store/cartStore"
 
 export default function Calculator() {
   const [amount, setAmount] = useState("0.00")
   const [isTyping, setIsTyping] = useState(false)
+  const [date, setDate] = useState<Date | undefined>(new Date())
+  const { addItemToRecords } = useRecordsStore()
 
   const handlePress = (key: string) => {
     if (key === "DEL") {
@@ -55,19 +59,15 @@ export default function Calculator() {
         <span className='text-xs font-medium text-muted-foreground tracking-wider'>
           SZYBKIE DODAWANIE
         </span>
-        <Button
-          variant='outline'
-          size='sm'
-          className='h-8 gap-2 text-xs font-normal'
-        >
-          <Calendar className='h-3.5 w-3.5' />
-          <span>Dzisiaj</span>
-        </Button>
+
+        <DatePicker date={date} setDate={setDate} />
       </div>
 
       {/* Display */}
       <div className='flex items-baseline justify-center mb-8 gap-1'>
-        <span className='text-2xl text-muted-foreground font-light mr-2'>PLN</span>
+        <span className='text-2xl text-muted-foreground font-light mr-2'>
+          PLN
+        </span>
         <span
           className={cn(
             "text-5xl font-bold tracking-tight text-foreground transition-all",
@@ -104,7 +104,11 @@ export default function Calculator() {
         className='w-full h-14 text-lg font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all active:scale-[0.98]'
         size='lg'
         onClick={() => {
-          alert(`Zapisano: ${amount}`)
+          addItemToRecords({
+            id: Date.now(),
+            amount: parseFloat(amount),
+            date: date || new Date(),
+          })
           setAmount("0.00")
           setIsTyping(false)
         }}

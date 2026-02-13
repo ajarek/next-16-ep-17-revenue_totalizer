@@ -15,10 +15,7 @@ export default function Home() {
           })}{" "}
         </p>
         <h1 className='text-5xl font-bold text-primary'>240.00 zł</h1>
-        <p>
-          <span className='text-sm text-muted-foreground'>Bieżący dzień:</span>{" "}
-          {currentDate.toLocaleDateString()}
-        </p>
+       
       </div>
 
       <Calculator />
