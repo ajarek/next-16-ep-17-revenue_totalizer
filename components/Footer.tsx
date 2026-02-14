@@ -29,17 +29,13 @@ const Footer = () => {
   return (
     <div className='w-full h-20 flex justify-between items-center px-4 bg-primary/20'>
       {LinksButton.map((link) => (
-        <Button
-          asChild
+        <Link
           key={link.href}
-          variant='ghost'
-          size='icon'
-          className='rounded-full cursor-pointer w-14 h-14 p-0 m-0'
+          href={link.href}
+          className=' flex items-center justify-center hover:text-primary transition-colors duration-300 '
         >
-          <Link href={link.href}>
-            <link.icon size={48} strokeWidth={1.75} />
-          </Link>
-        </Button>
+          <link.icon size={48} />
+        </Link>
       ))}
     </div>
   )
