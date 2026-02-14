@@ -9,7 +9,7 @@ export default function Home() {
   const {items} = useRecordsStore()
   const {currentUser} = useCurrentUserStore()
   return (
-    <div className='w-full min-h-screen flex flex-col items-center justify-start gap-4  p-4'>
+    <div className='w-full min-h-[calc(1200px-128px)] flex flex-col items-center justify-start gap-4  p-4'>
       <div className='flex flex-col items-center justify-center gap-2 '>
         <p className='text-sm  space-x-2'>
           <span className='text-sm text-muted-foreground'>
