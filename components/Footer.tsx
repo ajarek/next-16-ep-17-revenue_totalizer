@@ -1,6 +1,6 @@
 import { Home, List, ChartLine, Settings } from "lucide-react"
 import Link from "next/link"
-import { Button } from "./ui/button"
+
 
 const LinksButton = [
   {
@@ -27,14 +27,14 @@ const LinksButton = [
 
 const Footer = () => {
   return (
-    <div className='w-full h-20 flex justify-between items-center px-4 bg-primary/20'>
+    <div className='fixed bottom-0 max-w-[560px] w-full h-20 flex justify-between items-center px-4 bg-primary/80'>
       {LinksButton.map((link) => (
         <Link
           key={link.href}
           href={link.href}
           className=' flex items-center justify-center hover:text-primary transition-colors duration-300 '
         >
-          <link.icon size={48} />
+          <link.icon size={24} />
         </Link>
       ))}
     </div>

@@ -28,7 +28,7 @@ export default function Home() {
 
       <Calculator />
       <h2 className="text-2xl font-bold">Ostatnie transakcje:</h2>
-      <ListTransaction end={5} />
+      <ListTransaction end={4} />
     </div>
   )
 }

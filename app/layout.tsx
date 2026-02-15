@@ -26,7 +26,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-         <div className='w-full max-w-[560px] h-[1200px] mx-auto flex flex-col items-center justify-between border-4 border-primary '>
+         <div className='relative w-full max-w-[560px] h-[1200px] mx-auto flex flex-col items-center justify-start border-4 border-primary '>
           <Navbar />
           {children}
           <Footer />

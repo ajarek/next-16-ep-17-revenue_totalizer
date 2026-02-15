@@ -11,7 +11,7 @@ const Navbar = () => {
   const [changeUser, setChangeUser] = useState<number>(0)
   const { setCurrentUser } = useCurrentUserStore()
   return (
-    <div className='w-full h-16 flex justify-between items-center px-4 bg-primary/20'>
+    <div className='w-full h-16 flex justify-between items-center px-4 bg-primary/80'>
       <Link href='/'>
         <h1 className='text-xl font-semibold'>Sumator przychodów</h1>
       </Link>
