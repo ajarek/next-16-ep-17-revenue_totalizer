@@ -9,7 +9,7 @@ const ListTransaction = ({end=undefined}: {end: number | undefined}) => {
   const { items, removeItemFromRecords } = useRecordsStore()
   const { currentUser } = useCurrentUserStore()
   return (
-    <div className='w-full flex flex-col gap-4 p-4 overflow-y-auto'>
+    <div className='w-full h-[480px] flex flex-col gap-4 p-4 overflow-y-auto'>
       {items
         .slice(0, end)
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
