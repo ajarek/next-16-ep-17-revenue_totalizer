@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 export default function NotFound() {
   return (
-    <main className='fixed top-0 left-0 right-0 h-screen w-full mx-auto border container flex flex-col items-center justify-center bg-secondary z-70 overflow-hidden'>
+    <main className='w-full max-w-[560px] min-h-[calc(100vh-5rem)] mx-auto flex flex-col items-center justify-center border-4 border-primary '>
       <div className='w-full flex flex-col items-center text-center gap-6'>
         <h1 className='text-4xl font-serif text-primary mt-4'>
           Strona nie znaleziona!

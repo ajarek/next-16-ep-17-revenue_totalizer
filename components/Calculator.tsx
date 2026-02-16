@@ -1,19 +1,19 @@
 "use client"
 
 import { useState } from "react"
-import { Calendar, Delete, Plus } from "lucide-react"
+import { Delete, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import DatePicker from "./DatePicker"
 import { useRecordsStore } from "@/store/recordsStore"
-import {useCurrentUserStore} from "@/store/currentUserStore"
+import { useCurrentUserStore } from "@/store/currentUserStore"
 
 export default function Calculator() {
   const [amount, setAmount] = useState("0.00")
   const [isTyping, setIsTyping] = useState(false)
   const [date, setDate] = useState<Date | undefined>(new Date())
   const { addItemToRecords } = useRecordsStore()
-  const {currentUser} = useCurrentUserStore()
+  const { currentUser } = useCurrentUserStore()
 
   const handlePress = (key: string) => {
     if (key === "DEL") {
@@ -43,7 +43,6 @@ export default function Calculator() {
       setAmount(key)
       setIsTyping(true)
     } else {
-      // Limit decimal places to 2 if dot exists
       if (amount.includes(".")) {
         const [, decimal] = amount.split(".")
         if (decimal && decimal.length >= 2) return
@@ -56,7 +55,6 @@ export default function Calculator() {
 
   return (
     <div className='w-full  mx-auto p-4 rounded-xl bg-card border shadow-sm'>
-      {/* Header */}
       <div className='flex items-center justify-between mb-6'>
         <span className='text-xs font-medium text-muted-foreground tracking-wider'>
           SZYBKIE DODAWANIE
@@ -65,7 +63,6 @@ export default function Calculator() {
         <DatePicker date={date} setDate={setDate} />
       </div>
 
-      {/* Display */}
       <div className='flex items-baseline justify-center mb-8 gap-1'>
         <span className='text-2xl text-muted-foreground font-light mr-2'>
           PLN
@@ -83,7 +80,6 @@ export default function Calculator() {
 
       <div className='h-px w-full bg-border mb-6' />
 
-      {/* Keypad */}
       <div className='grid grid-cols-3 gap-3 mb-6'>
         {keys.map((key) => (
           <Button
@@ -101,7 +97,6 @@ export default function Calculator() {
         ))}
       </div>
 
-      {/* Submit Button */}
       <Button
         className='w-full h-14 text-lg font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all active:scale-[0.98]'
         size='lg'

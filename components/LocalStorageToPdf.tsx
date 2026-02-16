@@ -31,7 +31,6 @@ import {
 import { format } from "date-fns"
 import type { Record as TransactionRecord } from "@/types/typeRecord"
 
-// Types
 interface PdfExportOptions {
   title?: string
   includeTimestamp?: boolean
@@ -48,7 +47,6 @@ export default function LocalStorageToPdf() {
   const [isExporting, setIsExporting] = useState(false)
   const [dataLoaded, setDataLoaded] = useState(false)
 
-  // Load records from localStorage
   const loadRecords = useCallback(() => {
     if (typeof window === "undefined") return
 
@@ -65,11 +63,10 @@ export default function LocalStorageToPdf() {
       let parsedItems: TransactionRecord[] = []
       try {
         const parsed = JSON.parse(rawValue)
-        // Zustand persist stores data in { state: { items: [] }, version: 0 }
+
         if (parsed && parsed.state && Array.isArray(parsed.state.items)) {
           parsedItems = parsed.state.items
         } else if (Array.isArray(parsed)) {
-          // Fallback if stored differently
           parsedItems = parsed
         }
       } catch (e) {
@@ -80,7 +77,6 @@ export default function LocalStorageToPdf() {
 
       setItems(parsedItems)
 
-      // Extract unique users
       const users = Array.from(
         new Set(parsedItems.map((item) => item.user_name)),
       ).sort()
@@ -95,7 +91,6 @@ export default function LocalStorageToPdf() {
     }
   }, [])
 
-  // Filter items when selection or items change
   useEffect(() => {
     if (!dataLoaded) return
 
@@ -105,7 +100,6 @@ export default function LocalStorageToPdf() {
       filtered = filtered.filter((item) => item.user_name === selectedUser)
     }
 
-    // Sort by date (oldest first)
     filtered.sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     )
@@ -113,12 +107,10 @@ export default function LocalStorageToPdf() {
     setFilteredItems(filtered)
   }, [items, selectedUser, dataLoaded])
 
-  // Initial load
   useEffect(() => {
     loadRecords()
   }, [loadRecords])
 
-  // Generate PDF
   const generatePdf = async (options: PdfExportOptions = {}) => {
     if (filteredItems.length === 0) {
       setError("Brak danych do eksportu dla wybranego użytkownika")
@@ -137,7 +129,6 @@ export default function LocalStorageToPdf() {
       const margin = 20
       let yPosition = margin
 
-      // Helper function to add new page if needed
       const checkNewPage = (requiredSpace: number) => {
         if (yPosition + requiredSpace > pageHeight - margin) {
           doc.addPage()
@@ -145,16 +136,13 @@ export default function LocalStorageToPdf() {
         }
       }
 
-      // Calculate total
       const total = filteredItems.reduce((sum, item) => sum + item.amount, 0)
 
-      // Title
       doc.setFontSize(18)
       doc.setFont("helvetica", "bold")
       doc.text(title, margin, yPosition)
       yPosition += 10
 
-      // Timestamp & Context
       if (includeTimestamp) {
         doc.setFontSize(10)
         doc.setFont("helvetica", "italic")
@@ -168,12 +156,10 @@ export default function LocalStorageToPdf() {
         yPosition += 14
       }
 
-      // Separator line
       doc.setDrawColor(200)
       doc.line(margin, yPosition, pageWidth - margin, yPosition)
       yPosition += 10
 
-      // Table Header
       doc.setFontSize(12)
       doc.setFont("helvetica", "bold")
       doc.text("Lp.", margin, yPosition)
@@ -185,7 +171,6 @@ export default function LocalStorageToPdf() {
       doc.line(margin, yPosition, pageWidth - margin, yPosition)
       yPosition += 10
 
-      // List Items
       doc.setFontSize(10)
       doc.setFont("helvetica", "normal")
 
@@ -201,7 +186,6 @@ export default function LocalStorageToPdf() {
         yPosition += 8
       })
 
-      // Summary
       checkNewPage(20)
       yPosition += 5
       doc.line(margin, yPosition, pageWidth - margin, yPosition)
@@ -210,7 +194,6 @@ export default function LocalStorageToPdf() {
       doc.setFont("helvetica", "bold")
       doc.text(`Suma całkowita: ${total.toFixed(2)} PLN`, margin, yPosition)
 
-      // Footer
       const totalPages = doc.getNumberOfPages()
       for (let i = 1; i <= totalPages; i++) {
         doc.setPage(i)
@@ -238,7 +221,7 @@ export default function LocalStorageToPdf() {
   }
 
   return (
-    <div className='w-full max-w-4xl mx-auto p-6 space-y-6'>
+    <div className='w-full max-w-6xl mx-auto  space-y-6'>
       <Card>
         <CardHeader>
           <CardTitle className='flex items-center gap-2'>
@@ -250,7 +233,6 @@ export default function LocalStorageToPdf() {
           </CardDescription>
         </CardHeader>
         <CardContent className='space-y-6'>
-          {/* Alerts */}
           {error && (
             <Alert variant='destructive'>
               <AlertCircle className='h-4 w-4' />
@@ -276,7 +258,6 @@ export default function LocalStorageToPdf() {
             </Alert>
           ) : (
             <>
-              {/* Controls */}
               <div className='flex flex-wrap gap-4 items-end'>
                 <div className='space-y-2 w-full md:w-64'>
                   <Label htmlFor='user-select'>Filtr użytkownika</Label>
@@ -305,7 +286,6 @@ export default function LocalStorageToPdf() {
                 </Button>
               </div>
 
-              {/* Data Preview */}
               <div className='space-y-4'>
                 <div className='flex items-center justify-between'>
                   <h3 className='text-lg font-semibold'>
@@ -341,7 +321,6 @@ export default function LocalStorageToPdf() {
                   </ScrollArea>
                 </Card>
 
-                {/* Footer / Summary */}
                 <div className='flex justify-between items-center p-4 border rounded-lg bg-card'>
                   <div className='font-bold text-lg'>
                     Suma:{" "}

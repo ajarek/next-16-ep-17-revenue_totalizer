@@ -51,10 +51,9 @@ const ChartAnalytics = () => {
     [records],
   )
   const chartData = React.useMemo(() => {
-    // Group records by date and sum amounts
     const grouped = records.reduce(
       (acc, curr) => {
-        const date = new Date(curr.date).toLocaleDateString("en-CA") // YYYY-MM-DD
+        const date = new Date(curr.date).toLocaleDateString("en-CA")
         if (!acc[date]) {
           acc[date] = 0
         }
@@ -64,7 +63,6 @@ const ChartAnalytics = () => {
       {} as Record<string, number>,
     )
 
-    // Convert to array and sort by date
     return Object.entries(grouped)
       .map(([date, amount]) => ({
         date,

@@ -5,7 +5,7 @@ import { Button } from "./ui/button"
 import { Trash } from "lucide-react"
 import { format } from "date-fns"
 
-const ListTransaction = ({end=undefined}: {end: number | undefined}) => {
+const ListTransaction = ({ end = undefined }: { end: number | undefined }) => {
   const { items, removeItemFromRecords } = useRecordsStore()
   const { currentUser } = useCurrentUserStore()
   return (
@@ -38,7 +38,6 @@ const ListTransaction = ({end=undefined}: {end: number | undefined}) => {
             </Button>
           </div>
         ))}
-      
     </div>
   )
 }

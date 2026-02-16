@@ -1,7 +1,6 @@
 import { Home, List, ChartLine, Settings } from "lucide-react"
 import Link from "next/link"
 
-
 const LinksButton = [
   {
     href: "/",

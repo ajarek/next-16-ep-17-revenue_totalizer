@@ -1,10 +1,8 @@
-'use client'
-
-import LocalStorageToPdf from '@/components/LocalStorageToPdf'
+import LocalStorageToPdf from "@/components/LocalStorageToPdf"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className='w-full  mx-auto min-h-screen'>
       <LocalStorageToPdf />
     </main>
   )

@@ -21,7 +21,8 @@ const Navbar = () => {
           size='icon'
           className='rounded-full cursor-pointer w-12 h-12'
           onClick={() => {
-            const nextUserIndex = changeUser === User.length - 1 ? 0 : changeUser + 1
+            const nextUserIndex =
+              changeUser === User.length - 1 ? 0 : changeUser + 1
             setChangeUser(nextUserIndex)
             setCurrentUser(User[nextUserIndex])
           }}

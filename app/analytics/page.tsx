@@ -1,4 +1,4 @@
-import ChartAnalytics from '@/components/ChartAnalytics'
+import ChartAnalytics from "@/components/ChartAnalytics"
 
 const AnalyticsPage = () => {
   return (
