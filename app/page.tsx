@@ -9,7 +9,7 @@ export default function Home() {
   const { items } = useRecordsStore()
   const { currentUser } = useCurrentUserStore()
   return (
-    <div className='w-full min-h-[calc(1200px-144px)] flex flex-col items-center justify-start gap-4  p-4'>
+    <div className='w-full min-h-[calc(1200px-144px)] flex flex-col items-center justify-start gap-4 p-2 '>
       <div className='flex flex-col items-center justify-center gap-2 '>
         <p className='text-sm  space-x-2'>
           <span className='text-sm text-muted-foreground'>
@@ -20,7 +20,7 @@ export default function Home() {
             year: "numeric",
           })}{" "}
         </p>
-        <h1 className='text-5xl font-bold text-primary'>
+        <h1 className='text-3xl font-bold text-primary'>
           {items
             .filter((item) => item.user_name === currentUser?.name)
             .reduce((total, item) => total + item.amount, 0)

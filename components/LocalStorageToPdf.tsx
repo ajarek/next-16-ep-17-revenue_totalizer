@@ -136,7 +136,22 @@ export default function LocalStorageToPdf() {
         }
       }
 
-      const total = filteredItems.reduce((sum, item) => sum + item.amount, 0)
+      const totalAmount = filteredItems.reduce(
+        (sum, item) => sum + item.amount,
+        0,
+      )
+      const totalCard = filteredItems.reduce(
+        (sum, item) => sum + (item.cardAmount || 0),
+        0,
+      )
+      const totalKm = filteredItems.reduce(
+        (sum, item) => sum + (item.km || 0),
+        0,
+      )
+      const totalFuel = filteredItems.reduce(
+        (sum, item) => sum + (item.fuelCost || 0),
+        0,
+      )
 
       doc.setFontSize(18)
       doc.setFont("helvetica", "bold")
@@ -160,12 +175,15 @@ export default function LocalStorageToPdf() {
       doc.line(margin, yPosition, pageWidth - margin, yPosition)
       yPosition += 10
 
-      doc.setFontSize(12)
+      doc.setFontSize(10)
       doc.setFont("helvetica", "bold")
       doc.text("Lp.", margin, yPosition)
-      doc.text("Data", margin + 15, yPosition)
-      doc.text("Użytkownik", margin + 50, yPosition)
-      doc.text("Kwota", margin + 120, yPosition)
+      doc.text("Data", margin + 10, yPosition)
+      doc.text("Użytkownik", margin + 35, yPosition)
+      doc.text("Utarg", margin + 75, yPosition)
+      doc.text("Karta", margin + 100, yPosition)
+      doc.text("KM", margin + 125, yPosition)
+      doc.text("Paliwo", margin + 145, yPosition)
 
       yPosition += 5
       doc.line(margin, yPosition, pageWidth - margin, yPosition)
@@ -179,9 +197,16 @@ export default function LocalStorageToPdf() {
         const dateStr = format(new Date(item.date), "dd.MM.yyyy")
 
         doc.text(`${index + 1}.`, margin, yPosition)
-        doc.text(dateStr, margin + 15, yPosition)
-        doc.text(item.user_name, margin + 50, yPosition)
-        doc.text(`${item.amount.toFixed(2)} PLN`, margin + 120, yPosition)
+        doc.text(dateStr, margin + 10, yPosition)
+        doc.text(item.user_name.substring(0, 15), margin + 35, yPosition)
+        doc.text(`${item.amount.toFixed(2)}`, margin + 75, yPosition)
+        doc.text(
+          `${(item.cardAmount || 0).toFixed(2)}`,
+          margin + 100,
+          yPosition,
+        )
+        doc.text(`${(item.km || 0).toFixed(1)}`, margin + 125, yPosition)
+        doc.text(`${(item.fuelCost || 0).toFixed(2)}`, margin + 145, yPosition)
 
         yPosition += 8
       })
@@ -192,7 +217,13 @@ export default function LocalStorageToPdf() {
       yPosition += 10
       doc.setFontSize(12)
       doc.setFont("helvetica", "bold")
-      doc.text(`Suma całkowita: ${total.toFixed(2)} PLN`, margin, yPosition)
+      doc.text(`Suma Utarg: ${totalAmount.toFixed(2)} PLN`, margin, yPosition)
+      yPosition += 5
+      doc.text(`Suma Karta: ${totalCard.toFixed(2)} PLN`, margin, yPosition)
+      yPosition += 5
+      doc.text(`Suma KM: ${totalKm.toFixed(1)}`, margin, yPosition)
+      yPosition += 5
+      doc.text(`Suma Paliwo: ${totalFuel.toFixed(2)} PLN`, margin, yPosition)
 
       const totalPages = doc.getNumberOfPages()
       for (let i = 1; i <= totalPages; i++) {
@@ -300,16 +331,27 @@ export default function LocalStorageToPdf() {
                         {filteredItems.map((item, i) => (
                           <div
                             key={i}
-                            className='flex justify-between border-b border-border/50 pb-1 last:border-0 hover:bg-muted/80 px-2 py-1 rounded'
+                            className='flex flex-col border-b border-border/50 pb-2 last:border-0 hover:bg-muted/80 px-2 py-2 rounded gap-1'
                           >
-                            <span>
-                              {i + 1}.{" "}
-                              {format(new Date(item.date), "dd.MM.yyyy")} -{" "}
-                              {item.user_name}
-                            </span>
-                            <span className='font-semibold'>
-                              {item.amount.toFixed(2)} PLN
-                            </span>
+                            <div className='flex justify-between items-center'>
+                              <span>
+                                {i + 1}.{" "}
+                                {format(new Date(item.date), "dd.MM.yyyy")} -{" "}
+                                {item.user_name}
+                              </span>
+                              <span className='font-semibold'>
+                                {item.amount.toFixed(2)} PLN
+                              </span>
+                            </div>
+                            <div className='flex justify-between text-xs text-muted-foreground pl-4 pr-1'>
+                              <span>
+                                Karta: {(item.cardAmount || 0).toFixed(2)}
+                              </span>
+                              <span>KM: {item.km || 0}</span>
+                              <span>
+                                Paliwo: {(item.fuelCost || 0).toFixed(2)}
+                              </span>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -322,12 +364,45 @@ export default function LocalStorageToPdf() {
                 </Card>
 
                 <div className='flex justify-between items-center p-4 border rounded-lg bg-card'>
-                  <div className='font-bold text-lg'>
-                    Suma:{" "}
-                    {filteredItems
-                      .reduce((acc, curr) => acc + curr.amount, 0)
-                      .toFixed(2)}{" "}
-                    PLN
+                  <div className='text-sm space-y-1'>
+                    <div>
+                      Suma Utarg:{" "}
+                      <span className='font-bold'>
+                        {filteredItems
+                          .reduce((acc, curr) => acc + curr.amount, 0)
+                          .toFixed(2)}{" "}
+                        PLN
+                      </span>
+                    </div>
+                    <div>
+                      Suma Karta:{" "}
+                      <span className='font-bold'>
+                        {filteredItems
+                          .reduce(
+                            (acc, curr) => acc + (curr.cardAmount || 0),
+                            0,
+                          )
+                          .toFixed(2)}{" "}
+                        PLN
+                      </span>
+                    </div>
+                    <div>
+                      Suma KM:{" "}
+                      <span className='font-bold'>
+                        {filteredItems
+                          .reduce((acc, curr) => acc + (curr.km || 0), 0)
+                          .toFixed(1)}
+                      </span>
+                    </div>
+                    <div>
+                      Suma Paliwo:{" "}
+                      <span className='font-bold'>
+                        {filteredItems
+                          .reduce((acc, curr) => acc + (curr.fuelCost || 0), 0)
+                          .toFixed(2)}{" "}
+                        PLN
+                      </span>
+                    </div>
                   </div>
                   <Button
                     onClick={() => generatePdf()}

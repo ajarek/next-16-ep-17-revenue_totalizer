@@ -26,7 +26,7 @@ const LinksButton = [
 
 const Footer = () => {
   return (
-    <div className='fixed bottom-0 max-w-[560px] w-full h-20 flex justify-between items-center px-4 bg-primary/80'>
+    <div className='fixed bottom-0 max-w-[560px] w-full h-16 flex justify-between items-center px-4 bg-primary/80'>
       {LinksButton.map((link) => (
         <Link
           key={link.href}
